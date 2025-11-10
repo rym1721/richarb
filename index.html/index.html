@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>instagram.exe — 𝙍𝙄𝘾𝙃𝘼𝙍𝘿</title>
+
+  <!-- Poppins для цифр -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+:root{
+      --bg: #0f0f0f;
+      --window: #141414;
+      --menu: #141414;
+      --border: #141414;
+      --muted: #ffffff;   /* 2 текст в посте */
+    }
+
+    /* базовая сетка */
+    html,body{height:100%;margin:0;}
+  body {
+  --bg: #000000;        /*  Общий фон страницы */
+  --window: #0c0c0cfd;    /*  Основной фон поста / окна */
+  --title: #d14040;     
+  --menu: #3200e7;      /*  песня */
+  --border: #3200e7;    /*  Обводка элементов */
+  --text: #ffffff;     
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Courier New", monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  color: var(--text);
+}
+
+    html,body{height:100%;margin:0;}
+    body{
+      background:var(--bg);
+      font-family: "Courier New", monospace;
+      color:var(--text);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px 10px;
+      box-sizing:border-box;
+    }
+.window {
+  width: 400px;
+  height: 100vh;
+  border: 2px solid var(--border);
+  box-shadow: 0 0 15px rgba(0, 0, 0, .7);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+
+  /* Фон с плавным градиентом */
+  background:
+    radial-gradient(circle at 25% 25%, #e00c0c 15%, #c24137 35%, #0840b9 70%, #0d0d0d 100%);
+}
+
+/* контейнер для спайдеров (внутри .window) */
+.window { position: relative; /* важно, чтобы абсолютные позиции спайдеров были внутри окна */ }
+
+/* общий стиль для всех голов */
+.window .spiders { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.window .spider {
+  position: absolute;
+  width: 84px;            /* размер голов — одинаковый */
+  height: 84px;
+  background-image: url('паук.png'); /* <-- путь к твоему PNG с головой */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1;             /* полностью непрозрачные */
+  pointer-events: none;   /* клики проходят к элементам под ними */
+  transform-origin: center;
+  z-index: 1;             /* если нужно чтобы миниатюры были выше, у них должен быть z-index больше */
+}
+
+/* Позиции по периметру — не в ряд, разные наклоны */
+.window .spider.s1 { /* верхний правый, чуть влево от края */
+  top: 55px;
+  right: 12px;
+  transform: rotate(-12deg);
+}
+.window .spider.s2 { /* верхний левый, смещён вниз */
+  top: 55px;
+  left: 40px;
+  transform: rotate(8deg);
+}
+.window .spider.s3 { /* правый центр, чуть выше низа */
+  top: 50%;
+  right: 20px;
+  transform: rotate(25deg);
+}
+.window .spider.s4 { /* левый центр, чуть ниже верха */
+  top: 75%;
+  left: 140px;
+  transform: rotate(-28deg);
+}
+.window .spider.s5 { /* нижний правый — над футером */
+  bottom: 70px; /* учитываем высоту footer/маркировки */
+  right: 24px;
+  transform: rotate(10deg);
+}
+.window .spider.s6 { /* нижний левый — у самого низа */
+  bottom: 34px;
+  left: 18px;
+  transform: rotate(-6deg);
+}
+.window .spider.s7 { /* верх-центр — чуть смещённый */
+  top: 23%;
+  left: 55%;
+  transform: translateX(-50%) rotate(4deg);
+}
+
+/* Если миниатюры должны быть поверх стикеров, задайте им более высокий z-index:
+   .gallery img { position: relative; z-index: 3; }
+   .post, .post-head и т.д. — при необходимости подвинуть выше */
+
+
+
+.content {
+  flex: 1;               /* занимает всё пространство */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+    .titlebar {
+      background: #3200e7;   /*instagram.exe*/
+      padding: 5px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+    .titlebar .left{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .titlebar .title{ font-size:14px; }
+    .titlebar .controls{ font-size:14px; opacity:.95; }
+    .back-btn{
+      display:none;
+      background:var(--menu);
+      color:#fff;
+      border:none;
+      padding:4px 8px;
+      cursor:pointer;
+      border-radius:3px;
+      font-size:14px;
+    }
+   .menu {
+  background: #e70000;   /* File Edit View Options Help */
+  color: #ffffff;        
+  border-bottom: 1px solid #3200e7;   /* нижняя подводка File Edit.. */
+  padding: 4px 8px;
+}
+    .content{
+      flex:1;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+    .profile { padding: 10px; }
+    .profile img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #e70000;   /* обводка авы */
+    }
+    .stats {
+      margin: 10px 0;
+      font-size: 14px;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .stat-item {
+      margin-right: 15px;
+      text-align: left;
+    }
+    .number {
+      display: block;
+      font-family: "Poppins", sans-serif;
+      font-size: 16px;
+    }
+    .label {
+      display: block;
+      font-size: 12px;
+    }
+    .bio { font-size: 13px; margin-bottom: 10px; }
+    .buttons button {
+      background: #311ee4;  /* following message */
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      margin: 3px;
+      cursor: pointer;
+    }
+   /* галерея — контейнер для миниатюр и спайдеров */
+.gallery {
+  position: relative;      /* важно для абсолютного позиционирования спайдеров внутри */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  padding: 14px;
+  overflow: hidden;        /* ничего не вылезет за границы галереи */
+}
+
+/* миниатюры — поверх всех стикеров */
+.gallery img.thumb {
+  position: relative;
+  z-index: 4;              /* выше, чем спайдеры */
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  cursor: pointer;
+  display: block;
+}
+
+/* аватар в профиле — должен быть поверх спайдеров */
+.profile img {
+  position: relative;
+  z-index: 5;
+}
+
+ 
+
+/* стики — одинаковый размер, под миниатюрами (z-index ниже) */
+.gallery .spider {
+  position: absolute;
+  width: var(--spider-size, 64px);   /* размер можно задать через CSS-переменную */
+  height: var(--spider-size, 64px);
+  background-image: url('паук.png'); /* <-- путь к файлу */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;   /* клики проходят к миниатюрам */
+  opacity: 1;             /* полностью непрозрачные */
+  z-index: 1;             /* под миниатюрами (thumb z-index:4) и под аватаром (5) */
+  transform-origin: center;
+}
+
+.gallery img.thumb,
+.profile,
+.profile img,
+.post,
+.post-head,
+.post-body,
+.titlebar,
+.menu,
+.footer {
+  position: relative; /* нужно, чтобы z-index работал */
+  z-index: 2;         /* значение больше, чем у .spider (0) — элементы будут сверху */
+}
+
+
+    .feed{ display:none; padding:8px; }
+    .post {
+  background: #3200e7;
+  border: 2px solid var(--border);
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+
+    .post-head{
+      display:flex;
+      align-items:center;
+      gap:19px;
+      padding:4px;            /*исправить!! на 11*/
+      background: #3200e7;   /* над постом */
+      border-bottom:1px solid var(--border);
+    }
+    .post-head img{
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      border:1px solid #e70000;   /* обводка авы в постах */
+      object-fit:cover;
+    }
+    .post-head .uname{
+      font-weight:bold;
+      font-size:20px;
+      text-transform:lowercase;
+    }
+
+    .post-img img{
+      width:100%;
+      height:auto;
+      display:block;
+      object-fit:cover;
+    }
+
+    .post-body{ 
+      padding:8px 10px; 
+      color:var(--muted); 
+      font-size:13px; 
+    }
+    .likes{ 
+      font-family:"Poppins", 
+      sans-serif; font-size:14px; 
+      color:#ffffff;    /* цвет лайков */
+      margin-bottom:6px; 
+    }
+    .caption{ margin-bottom:6px; 
+      color:#ffffff; }   /* основной текс поста */
+
+
+    /* footer (музыка) — виден всегда */
+   .footer {
+  flex-shrink: 0;        /* фиксируем внизу */
+  background: var(--menu);
+  padding: 6px 10px;
+  color: #ffffff;
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  height: 36px;          /* уменьшаем высоту, меньше пустого */
+  box-sizing: border-box;
+}
+    .marquee{
+      overflow:hidden;
+      white-space:nowrap;
+      width:100%;
+    }
+    .marquee span{
+      display:inline-block;
+      padding-left:100%;
+      animation: scroll 14s linear infinite;
+    }
+    @keyframes scroll{
+      from{ transform: translateX(0); }
+      to{ transform: translateX(-100%); }
+    }
+
+    /* адаптивные мелочи */
+    @media (max-width:420px){
+      .window{ height:100vh; }
+      .profile{ padding:10px; }
+      .gallery{ gap:4px; padding:8px; }
+    }
+  </style>
+</head>
+<body> <div class="window" role="application" 
+  aria-label="instagram retro window"> 
+  <div class="titlebar"> 
+    <div class="left"> 
+      <button id="backBtn" 
+      class="back-btn" 
+      title="назад">←</button> 
+      <div class="title">instagram.exe</div> 
+    </div> 
+      <div class="controls">☐ ✕</div> 
+    </div> 
+    <div class="menu">File Edit View Options Help</div> 
+    <div class="content" id="content"> 
+      <div id="profileBlock"> 
+        <div class="profile"> 
+          <div class="profile-row"> 
+            <img src="https://i.pinimg.com/736x/47/21/90/4721904710db2519ff71f7a7ff6d4e95.jpg" alt="avatar"> <div> 
+              <div class="name">𝙍𝙄𝘾𝙃𝘼𝙍𝘿</div> 
+              <div class="stats"> 
+                <div class="stat-item"> 
+                  <span class="number">326</span> 
+                  <span class="label">posts</span> 
+                </div> 
+                <div class="stat-item"> 
+                  <span class="number">633</span> 
+                  <span class="label">followers</span> 
+                </div> 
+                <div class="stat-item"> 
+                  <span class="number">7852</span> 
+                  <span class="label">following</span> 
+                </div> 
+              </div> 
+            </div> 
+          </div> 
+          
+          <div class="buttons"> 
+            <button id="followingBtn">following</button> 
+            <button id="messageBtn">message</button> 
+          </div> 
+        </div>
+        <!-- вставь в .window — 7 отдельных "голов" -->
+<div class="spiders">
+  <div class="spider s1" aria-hidden="true"></div>
+  <div class="spider s2" aria-hidden="true"></div>
+  <div class="spider s3" aria-hidden="true"></div>
+  <div class="spider s4" aria-hidden="true"></div>
+  <div class="spider s5" aria-hidden="true"></div>
+  <div class="spider s6" aria-hidden="true"></div>
+  <div class="spider s7" aria-hidden="true"></div>
+</div>
+
+
+        <div class="gallery" id="galleryBlock" aria-label="gallery">
+          <img src="https://i.pinimg.com/736x/7a/91/fe/7a91fe05271083c4b7c9b013d598bd47.jpg" alt="pic2" data-index="0"
+               onerror="this.onerror=null;this.src='https://via.placeholder.com/110x110?text=No+img'">
+          <img src="https://i.pinimg.com/736x/ad/64/32/ad643252d4d8bd51f308b9342e6dce98.jpg" alt="pic1" data-index="1"
+               onerror="this.onerror=null;this.src='https://via.placeholder.com/110x110?text=No+img'">
+          <img src="https://i.pinimg.com/736x/9a/9c/75/9a9c75059602671ec6e53de854571d5f.jpg" alt="pic3" data-index="2"
+               onerror="this.onerror=null;this.src='https://via.placeholder.com/110x110?text=No+img'">
+          <img src="https://i.pinimg.com/736x/df/33/97/df3397325b47d42edc7dad2e3895feac.jpg" alt="pic4" data-index="3"
+               onerror="this.onerror=null;this.src='https://via.placeholder.com/110x110?text=No+img'">
+          <img src="https://i.pinimg.com/736x/f3/fd/96/f3fd9651e8180c48dc034b6bc89fec31.jpg" alt="pic5" data-index="4"
+               onerror="this.onerror=null;this.src='https://via.placeholder.com/110x110?text=No+img'">
+          <img src="https://i.pinimg.com/736x/ee/82/41/ee824146f30c1951d4e53041097c401b.jpg" alt="pic6" data-index="5"
+               onerror="this.onerror=null;this.src='https://via.placeholder.com/110x110?text=No+img'">
+        </div>
+      </div>
+
+      <!-- FEED (вертикальные посты) -->
+      <div id="feedBlock" class="feed" aria-live="polite"></div>
+    </div>
+
+    <!-- footer: song / marquee -->
+    <div class="footer">
+      <div class="marquee" aria-hidden="false"><span>♫ Cmonnn (Hit It One Time) - 5Star, Lay Bankz ♫</span></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // данные (исправлен синтаксис — добавлены запятые между элементами)
+      const images = [
+        "https://i.pinimg.com/736x/7a/91/fe/7a91fe05271083c4b7c9b013d598bd47.jpg",
+        "https://i.pinimg.com/736x/ad/64/32/ad643252d4d8bd51f308b9342e6dce98.jpg",
+        "https://i.pinimg.com/736x/9a/9c/75/9a9c75059602671ec6e53de854571d5f.jpg",
+        "https://i.pinimg.com/736x/df/33/97/df3397325b47d42edc7dad2e3895feac.jpg",
+        "https://i.pinimg.com/736x/f3/fd/96/f3fd9651e8180c48dc034b6bc89fec31.jpg",
+        "https://i.pinimg.com/736x/ee/82/41/ee824146f30c1951d4e53041097c401b.jpg"
+      ];
+      const likes = [178,259,521,237,381,417];
+      const comments = [214,192,326,450,218,444];
+      const times = ["1 day ago","2 days ago","5 days ago","1 week ago","2 weeks ago","4 weeks ago"];
+      const captions = [
+        "the streets are full of stories nobody writes down.",
+        "i am my own experiment. i am my own work of art.",
+        "do what you feel in your heart to be right, for you’ll be criticized anyway.",
+        "the hardest part is to start.",
+        "time spent with cats is never wasted.",
+        "chaos is what killed the dinosaurs, darling."
+      ];
+
+      // элементы
+      const feed = document.getElementById('feedBlock');
+      const profileBlock = document.getElementById('profileBlock');
+      const galleryBlock = document.getElementById('galleryBlock');
+      const backBtn = document.getElementById('backBtn');
+      const followingBtn = document.getElementById('followingBtn');
+      const messageBtn = document.getElementById('messageBtn');
+      const content = document.getElementById('content');
+
+      // строим вертикальную ленту (первые сверху)
+      function buildFeed(){
+        feed.innerHTML = '';
+        for(let i = 0; i < images.length; i++){
+          const post = document.createElement('article');
+          post.className = 'post';
+          post.dataset.index = i;
+          post.innerHTML = `
+             <div class="post-head">
+              <img src="https://i.pinimg.com/736x/47/21/90/4721904710db2519ff71f7a7ff6d4e95.jpg" alt="avatar">
+              <div class="uname">𝙍𝙄𝘾𝙃𝘼𝙍𝘿</div>
+            </div>
+            <div class="post-img"><img src="${images[i]}" alt="post image"></div>
+            <div class="post-body">
+              <div class="likes">💙 ${likes[i]} &nbsp; • &nbsp; 🗨️ ${comments[i]}</div>
+              <div class="caption"><strong>${captions[i] || ''}</strong></div>
+              <div class="view-comments">view all ${comments[i]} comments</div>
+              <div class="time">${times[i]}</div>
+            </div>
+          `;
+          feed.appendChild(post);
+        }
+      }
+
+      // открыть feed, показать сверху (первый пост) или прокрутить к индексу
+      function openFeed(scrollIndex = 0){
+        buildFeed();
+        profileBlock.style.display = 'none';
+        feed.style.display = 'block';
+        backBtn.style.display = 'inline-block';
+        // сначала сброс прокрутки, затем плавный скролл к элементу
+        content.scrollTop = 0;
+        setTimeout(()=> {
+          const posts = feed.querySelectorAll('.post');
+          if(posts[scrollIndex]){
+            posts[scrollIndex].scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        }, 80);
+      }
+
+      function closeFeed(){
+        feed.style.display = 'none';
+        profileBlock.style.display = 'block';
+        backBtn.style.display = 'none';
+        content.scrollTop = 0;
+      }
+
+      // события
+      followingBtn.addEventListener('click', ()=> openFeed(0)); // открыть первый пост сверху
+      backBtn.addEventListener('click', closeFeed);
+      messageBtn.addEventListener('click', ()=> {
+        window.open('https://t.me/richardxxw','_blank');
+      });
+
+      // клик по миниатюре — открыть ленту и прокрутить к посту
+      galleryBlock.addEventListener('click', (e)=>{
+        const img = e.target.closest('img');
+        if(!img) return;
+        const idx = Number(img.dataset.index);
+        if(!isNaN(idx)) openFeed(idx);
+      });
+
+      // начальное состояние
+      feed.style.display = 'none';
+      backBtn.style.display = 'none';
+    });
+
+
+// Параметры (поменяй путь к файлу, если нужно)
+const SPIDER_SRC = 'паук.png';   // путь к PNG с головой (без фоновой заливки)
+const SPIDER_COUNT = 7;          // сколько голов разместить
+const SPIDER_SIZE = 64;          // одинаковый размер всех голов (px)
+const PADDING = 8;               // отступ от внешнего края галереи (px)
+const JITTER = 12;               // случайное смещение, чтобы не стояли строго на линии (px)
+
+// Функция, равномерно расставляющая N элементов по периметру прямоугольника
+function placeSpidersAroundPerimeter() {
+  const gallery = document.getElementById('galleryBlock');
+  if (!gallery) return;
+
+  // Убедимся, что gallery position:relative
+  const comp = window.getComputedStyle(gallery).position;
+  if (comp === 'static') gallery.style.position = 'relative';
+
+  // Удаляем старые спайдеры, если есть
+  gallery.querySelectorAll('.spider').forEach(el => el.remove());
+
+  // Пометим миниатюры классом thumb (если ещё не помечены)
+  gallery.querySelectorAll('img').forEach(img => {
+    if (!img.classList.contains('thumb')) img.classList.add('thumb');
+  });
+
+  // Получаем размеры контейнера (внутренние)
+  const rect = gallery.getBoundingClientRect();
+  const W = Math.max(50, Math.floor(rect.width));
+  const H = Math.max(50, Math.floor(rect.height));
+
+  // Параметры периметра (учитываем padding внутри галереи)
+  const leftBound = PADDING;
+  const rightBound = W - PADDING - SPIDER_SIZE;
+  const topBound = PADDING;
+  const bottomBound = H - PADDING - SPIDER_SIZE;
+
+  // если область слишком мала — ничего не делаем
+  if (rightBound <= leftBound || bottomBound <= topBound) return;
+
+  // общая длина периметра (по внешней линии внутри паддинга)
+  const perimeter = (rightBound - leftBound) + (bottomBound - topBound) + (rightBound - leftBound) + (bottomBound - topBound);
+
+  for (let i = 0; i < SPIDER_COUNT; i++) {
+    // расстояние вдоль периметра (равномерно)
+    const dist = (perimeter * i) / SPIDER_COUNT;
+
+    // вычисляем, на какой стороне и координаты
+    let x = 0, y = 0;
+    let d = dist;
+
+    const topLength = rightBound - leftBound;
+    const rightLength = bottomBound - topBound;
+    const bottomLength = topLength;
+    const leftLength = rightLength;
+
+    if (d <= topLength) {
+      // верхняя сторона: слева->справа
+      x = leftBound + d;
+      y = topBound;
+    } else if (d <= topLength + rightLength) {
+      // правая: сверху->снизу
+      d -= topLength;
+      x = rightBound;
+      y = topBound + d;
+    } else if (d <= topLength + rightLength + bottomLength) {
+      // низ: справа->слева
+      d -= (topLength + rightLength);
+      x = rightBound - d;
+      y = bottomBound;
+    } else {
+      // левая: снизу->сверху
+      d -= (topLength + rightLength + bottomLength);
+      x = leftBound;
+      y = bottomBound - d;
+    }
+
+    // добавим небольшой случайный джиттер, чтобы не стояли ровно
+    const jitterX = Math.floor((Math.random() * (JITTER * 2)) - JITTER);
+    const jitterY = Math.floor((Math.random() * (JITTER * 2)) - JITTER);
+
+    // позиция с учётом джиттера, но зажата внутри контейнера (clamp)
+    const left = Math.max(leftBound, Math.min(rightBound, Math.round(x + jitterX)));
+    const top = Math.max(topBound, Math.min(bottomBound, Math.round(y + jitterY)));
+
+    // создаём элемент
+    const el = document.createElement('div');
+    el.className = 'spider';
+    el.style.width = SPIDER_SIZE + 'px';
+    el.style.height = SPIDER_SIZE + 'px';
+    el.style.left = left + 'px';
+    el.style.top = top + 'px';
+    el.style.backgroundImage = `url("${SPIDER_SRC}")`;
+    // небольшой рандомный наклон, чтобы не были выровнены одинаково
+    const angle = (Math.random() * 50) - 25; // -25..+25 deg
+    el.style.transform = `rotate(${angle}deg)`;
+    el.style.opacity = '1';
+
+    // добавляем в галерею (вставляем в DOM)
+    gallery.appendChild(el);
+  }
+}
+
+// Вызываем один раз после загрузки
+document.addEventListener('DOMContentLoaded', function () {
+  // небольшая задержка, чтобы галерея уже отрисовалась и имела корректные размеры
+  setTimeout(placeSpidersAroundPerimeter, 80);
+});
+
+
+
+  </script>
+</body>
+</html>
